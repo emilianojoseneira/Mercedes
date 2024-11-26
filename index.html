@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculador de Lista</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="section multiplier-section">
+            <h2>Valor Dolar</h2>
+            <input type="number" id="multiplierInput" placeholder="Ingrese Multiplicador" oninput="updateAllCalculatedValues()">
+        </div>
+        <div class="section upload-section">
+            <h2>Subir archivo Excel</h2>
+            <form id="uploadForm" enctype="multipart/form-data" method="post">
+                <input type="file" id="fileInput" name="file" accept=".xlsx, .xls">
+                <input type="hidden" id="multiplierHidden" name="multiplier">
+                <button type="button" onclick="uploadFile()">Subir</button>
+            </form>
+            <div id="uploadMessage"></div>
+        </div>
+        <div class="section search-section">
+            <h2>Buscar por Codigo MBA</h2>
+            <input type="text" id="codigoMBAInput" placeholder="Ingrese Codigo MBA">
+            <button type="button" onclick="buscarCodigoMBA()">Buscar</button>
+            <div id="searchResult"></div>
+            <form id="resultForm" style="display: none;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Est</th>
+                            <th>Código</th>
+                            <th>Codigo MBA</th>
+                            <th>Descripción</th>
+                            <th>U$S</th>
+                            <th>Desc</th>
+                            <th>U$S-desc</th>
+                            <th>Total pesos</th>
+                            <th>Margen</th> <!-- New column header -->
+                            <th>Venta</th> <!-- New column header -->
+                        </tr>
+                    </thead>
+                    <tbody id="resultTableBody">
+                        <!-- Rows will be added here dynamically -->
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('get_multiplier.php')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('multiplierInput').value = data.multiplier;
+                    document.getElementById('multiplierHidden').value = data.multiplier;
+                });
+        });
+    </script>
+</body>
+</html>
